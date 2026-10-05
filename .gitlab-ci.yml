@@ -1,0 +1,20 @@
+stages:
+  - detect-secrets
+  - build
+
+detect-secrets:
+  stage: detect-secrets
+  image: alpine:3.20
+  script:
+    - echo "Đang quét secret..."
+    # fail nếu tìm thấy chuỗi giống secret trong code
+    - if grep -rniE "password\s*=|secret_key\s*=" --exclude=.gitlab-ci.yml --exclude-dir=.git . ; then echo "Phát hiện secret!"; exit 1; fi
+    - echo "Không có secret"
+
+build:
+  stage: build
+  image: python:3.12-alpine
+  script:
+    - echo "Đang build..."
+    - python -m py_compile app.py
+    - echo "Build OK"

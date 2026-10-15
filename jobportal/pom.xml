@@ -11,8 +11,8 @@
 	<groupId>stu.recruitmentweb</groupId>
 	<artifactId>jobportal</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>photographer</name>
-	<description>Demo project for Spring Boot</description>
+	<name>jobportal</name>
+	<description>Job Portal web application built with Spring Boot</description>
 	<properties>
 		<java.version>11</java.version>
 	</properties>

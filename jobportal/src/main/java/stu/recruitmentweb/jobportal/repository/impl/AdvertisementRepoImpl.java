@@ -28,16 +28,15 @@ public class AdvertisementRepoImpl implements AdvertisementRepositoryCustom {
         strQuery.append("WHERE 1=1");
 
         Map<String, Object> params = new HashMap<>();
-        if (Objects.nonNull(name)) {
+        if (Objects.nonNull(name) && !name.trim().isEmpty()) {
             strQuery.append(" AND ta.title LIKE :title");
-            params.put("title", "%" +name+"%");
+            params.put("title", "%" + name.trim() + "%");
         }
 
         String strSelectQuery = "SELECT * " + strQuery;
 
-        String strCountQuery = "SELECT COUNT(DISTINCT ta.id)" + strQuery;
+        String strCountQuery = "SELECT COUNT(DISTINCT ta.id) " + strQuery;
 
-        return BaseRepository.getPagedNativeQuery(em,strSelectQuery, strCountQuery, params, pageable, Advertisement.class);
-
+        return BaseRepository.getPagedNativeQuery(em, strSelectQuery, strCountQuery, params, pageable, Advertisement.class);
     }
 }

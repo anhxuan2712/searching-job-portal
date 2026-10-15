@@ -84,7 +84,7 @@ public class JobRepositoryCustomImpl implements JobRepositoryCustom {
 
         String strSelectQuery = "SELECT * " + strQuery;
 
-        String strCountQuery = "SELECT COUNT(DISTINCT tj.id)" + strQuery;
+        String strCountQuery = "SELECT COUNT(DISTINCT tj.id) " + strQuery;
 
         return BaseRepository.getPagedNativeQuery(em, strSelectQuery, strCountQuery, params, pageable, Job.class);
     }
@@ -94,7 +94,7 @@ public class JobRepositoryCustomImpl implements JobRepositoryCustom {
         Map<String, Object> params = new HashMap<>();
         String strSelectQuery = "SELECT * " + FROM_TABLE;
 
-        String strCountQuery = "SELECT COUNT(DISTINCT tj.id)" + FROM_TABLE;
+        String strCountQuery = "SELECT COUNT(DISTINCT tj.id) " + FROM_TABLE;
         return BaseRepository.getPagedNativeQuery(em, strSelectQuery, strCountQuery, params, pageable, Job.class);
     }
 }

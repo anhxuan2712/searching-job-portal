@@ -16,6 +16,7 @@ import stu.recruitmentweb.jobportal.domain.payload.response.JobDetailResponse;
 import stu.recruitmentweb.jobportal.domain.payload.response.MessageResponse;
 import stu.recruitmentweb.jobportal.domain.payload.response.UserDetailResponse;
 import stu.recruitmentweb.jobportal.exception.BadRequestException;
+import stu.recruitmentweb.jobportal.exception.ResourceNotFoundException;
 import stu.recruitmentweb.jobportal.repository.*;
 import stu.recruitmentweb.jobportal.service.AdminService;
 import stu.recruitmentweb.jobportal.service.BaseService;
@@ -58,13 +59,8 @@ public class AdminServiceImpl extends BaseService implements AdminService {
 
     @Override
     public void lockAccountOfRecruiterAndJobseeker(Long id) {
-        User user = userRepository.findById(id).orElseThrow();
-        if (user.getIsLocked().equals(true)) {
-            user.setIsLocked(false);
-        } else {
-            user.setIsLocked(true);
-        }
-
+        User user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User", "id", id));
+        user.setIsLocked(!Boolean.TRUE.equals(user.getIsLocked()));
         userRepository.save(user);
     }
 
@@ -96,14 +92,14 @@ public class AdminServiceImpl extends BaseService implements AdminService {
 
     @Override
     public AdvertisementResponse getAdvertisementById(Long id) {
-        return mapper.convertToResponse(advertisementRepository.findById(id).orElseThrow(),AdvertisementResponse.class);
+        return mapper.convertToResponse(advertisementRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Advertisement", "id", id)), AdvertisementResponse.class);
     }
 
     @Override
     public void updateAdvertisement(Long id , String title, MultipartFile image, String description) {
         String imageFile = fileStorageService.storeFile(image);
 
-        Advertisement advertisement = advertisementRepository.findById(id).orElseThrow();
+        Advertisement advertisement = advertisementRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Advertisement", "id", id));
         advertisement.setDescription(description);
         advertisement.setImage(imageFile);
         advertisement.setTitle(title);
@@ -115,8 +111,7 @@ public class AdminServiceImpl extends BaseService implements AdminService {
     public Page<Category> getPageCategory(Integer pageNo, Integer pageSize) {
         int page = pageNo == 0 ? pageNo : pageNo - 1;
         Pageable pageable = PageRequest.of(page, pageSize);
-        List<Category> categories = categoryRepository.findAll();
-        return new PageImpl<>(categories, pageable, categories.size());
+        return categoryRepository.findAll(pageable);
     }
 
     @Override

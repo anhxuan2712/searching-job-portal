@@ -2,7 +2,7 @@ package stu.recruitmentweb.jobportal.repository.impl;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Repository;
 import stu.recruitmentweb.jobportal.domain.models.Job;
 import stu.recruitmentweb.jobportal.domain.models.User;
 import stu.recruitmentweb.jobportal.repository.BaseRepository;
@@ -13,7 +13,7 @@ import javax.persistence.PersistenceContext;
 import java.util.HashMap;
 import java.util.Map;
 
-@Service
+@Repository
 public class UserRepositoryCustomImpl implements UserRepositoryCustom {
 
     @PersistenceContext
@@ -26,7 +26,7 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
         Map<String, Object> params = new HashMap<>();
         String strSelectQuery = "SELECT * " + FROM_TABLE;
 
-        String strCountQuery = "SELECT COUNT(DISTINCT u.id)" + FROM_TABLE;
+        String strCountQuery = "SELECT COUNT(DISTINCT u.id) " + FROM_TABLE;
         return BaseRepository.getPagedNativeQuery(em, strSelectQuery, strCountQuery, params, pageable, User.class);
     }
 }

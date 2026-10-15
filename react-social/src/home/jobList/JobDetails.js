@@ -84,7 +84,7 @@ class JobDetails extends React.Component {
                                 <div class="single-job-items mb-50">
                                     <div class="job-items">
                                         <div class="company-img company-img-details">
-                                            <a href="#"><img src="../../../public/assets/img/icon/job-list3.png" alt="" /></a>
+                                            <a href="#"><img src="/assets/img/icon/job-list3.png" alt="" /></a>
                                         </div>
                                         <div class="job-tittle">
                                             <a href="#">
@@ -139,7 +139,7 @@ class JobDetails extends React.Component {
                                         <li>Địa chỉ : <span>{list.address}</span></li>
                                         <li>Level : <span>{list.level}</span></li>
                                         <li>Lương :  <span>{list.maxSalary}$</span></li>
-                                        <li>Hạn ứng tuyển : <span>{new Date(list.deadline).getDay() + " - " + new Date(list.deadline).getMonth() + " - " + new Date(list.deadline).getFullYear()}</span></li>
+                                        <li>Hạn ứng tuyển : <span>{new Date(list.deadline).getDate() + " - " + (new Date(list.deadline).getMonth() + 1) + " - " + new Date(list.deadline).getFullYear()}</span></li>
                                     </ul>
                                     {this.props.authenticated ? (
                                         <div class="apply-btn2">
@@ -158,7 +158,7 @@ class JobDetails extends React.Component {
                                     {/* <span>Hành trình đồng hàng Photographer</span> */}
                                     <p>{this.state.description}</p>
                                     <img
-                                        src={this.state.image === null ? ""  : this.state.image.indexOf("http") !== -1 ? this.state.image : `http://localhost:8080/image/` + this.state.image.replace('photographer/files/', '')}
+                                        src={this.state.image ? (this.state.image.indexOf("http") !== -1 ? this.state.image : `http://localhost:8080/image/` + this.state.image.replace('photographer/files/', '')) : ""}
                                         alt="Logo" style={{ height: "100px", width: "100px", marginBottom: "5px" , marginLeft :"40px" }} />
 
                                     <ul>

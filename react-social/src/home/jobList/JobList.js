@@ -131,11 +131,10 @@ function JobList() {
                                     <div class="select-job-items2">
                                         <input
                                             type="text"
-                                            class="js-input-from"
+                                            className="js-input-from"
                                             name="jobName"
                                             value={jobName}
                                             onChange={handleInputChange}
-                                            readonly
                                         />
                                     </div>
                                 </div>
@@ -170,7 +169,7 @@ function JobList() {
                                         <h4>Level</h4>
                                     </div>
                                     <div class="select-job-items2">
-                                        <input type="text" class="js-input-from" name='level' value={level} onChange={handleInputChange} readonly />
+                                        <input type="text" className="js-input-from" name='level' value={level} onChange={handleInputChange} />
                                     </div>
                                 </div>
                                 <br></br>
@@ -180,7 +179,7 @@ function JobList() {
                                         <h4>Lương nhỏ nhất</h4>
                                     </div>
                                     <div class="select-job-items2">
-                                        <input type="text" class="js-input-from" name='minSalary' value={minSalary} onChange={handleInputChange} readonly />
+                                        <input type="text" className="js-input-from" name='minSalary' value={minSalary} onChange={handleInputChange} />
                                     </div>
                                 </div>
                                 <br></br>
@@ -190,7 +189,7 @@ function JobList() {
                                         <h4>Lương cao nhất</h4>
                                     </div>
                                     <div class="select-job-items2">
-                                        <input type="text" class="js-input-from" name='maxSalary' value={maxSalary} onChange={handleInputChange} readonly />
+                                        <input type="text" className="js-input-from" name='maxSalary' value={maxSalary} onChange={handleInputChange} />
                                     </div>
                                 </div>
                                 <br></br>
@@ -200,7 +199,7 @@ function JobList() {
                                         <h4>Tên Công Ty</h4>
                                     </div>
                                     <div class="select-job-items2">
-                                        <input type="text" class="js-input-from" name='companyName' value={companyName} onChange={handleInputChange} readonly />
+                                        <input type="text" className="js-input-from" name='companyName' value={companyName} onChange={handleInputChange} />
                                     </div>
                                 </div>
                             </div>
@@ -241,7 +240,7 @@ function JobList() {
                                                     </div>
                                                     <div class="items-link items-link2 f-right">
                                                         <Link to={`/job-detail/${job.id}`}>{job.level}</Link>
-                                                        <span>{"Hạn: " + new Date(job.deadline).getDay() + " - " + new Date(job.deadline).getMonth() + " - " + new Date(job.deadline).getFullYear()}</span>
+                                                        <span>{"Hạn: " + new Date(job.deadline).getDate() + " - " + (new Date(job.deadline).getMonth() + 1) + " - " + new Date(job.deadline).getFullYear()}</span>
                                                     </div>
                                                 </div>
                                             )

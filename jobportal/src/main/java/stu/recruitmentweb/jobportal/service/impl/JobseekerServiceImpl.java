@@ -31,6 +31,12 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.util.StreamUtils;
+
+import java.io.InputStream;
+
 @Service
 @RequiredArgsConstructor
 public class JobseekerServiceImpl extends BaseService implements JobseekerService {
@@ -44,6 +50,9 @@ public class JobseekerServiceImpl extends BaseService implements JobseekerServic
     private final RecruitmentRepository recruitmentRepository;
     private final RecruitmentRepositoryCustom recruitmentRepositoryCustom;
     private final JavaMailSender mailSender;
+
+    @Value("${spring.mail.username:trungdang82678@gmail.com}")
+    private String mailSenderUsername;
 
     @Override
     public String editJobseekerInformation(PhoneRequest phoneRequest) {
@@ -105,9 +114,9 @@ public class JobseekerServiceImpl extends BaseService implements JobseekerServic
 
     @Override
     public Page<CurriculumVitaeResponse> getAllCvOfJobseeker() {
-        Pageable pageable = PageRequest.of(1, 10);
-        List<CurriculumVitaeResponse> list = mapper.convertToResponseList(curriculumVitaeRepository.findAllByJobseeker(getUser().getJobseeker()),CurriculumVitaeResponse.class);
-        return new PageImpl<>(list,pageable,list.size());
+        Pageable pageable = PageRequest.of(0, 10);
+        List<CurriculumVitaeResponse> list = mapper.convertToResponseList(curriculumVitaeRepository.findAllByJobseeker(getUser().getJobseeker()), CurriculumVitaeResponse.class);
+        return new PageImpl<>(list, pageable, list.size());
     }
 
     @Override
@@ -117,20 +126,17 @@ public class JobseekerServiceImpl extends BaseService implements JobseekerServic
 
     @Override
     public void submitRecruitment(Long jobId) {
-        if(getUser().getJobseeker().getCurriculumVitaeList().size() == 0) {
-
+        if (getUser().getJobseeker().getCurriculumVitaeList().isEmpty()) {
             throw new BadRequestException("Bạn cần upload CV trước khi ứng tuyển!!");
         }
-        Boolean isFlag = false;
-        for (CurriculumVitae cv : getUser().getJobseeker().getCurriculumVitaeList()){
-            if (Boolean.FALSE.equals(cv.getStatus()) ){
-                isFlag = false;
-            } else {
-                isFlag = true;
+        boolean hasActiveCv = false;
+        for (CurriculumVitae cv : getUser().getJobseeker().getCurriculumVitaeList()) {
+            if (Boolean.TRUE.equals(cv.getStatus())) {
+                hasActiveCv = true;
                 break;
             }
         }
-        if (isFlag.equals(false)) {
+        if (!hasActiveCv) {
             throw new BadRequestException("Bạn chưa chọn cv nào làm cv chính");
         }
         for (Recruitment r : recruitmentRepository.findByJobseeker(getUser().getJobseeker())) {
@@ -142,8 +148,8 @@ public class JobseekerServiceImpl extends BaseService implements JobseekerServic
 
         Recruitment recruitment = new Recruitment(job, getUser());
         recruitment.setIsAnswer(false);
-        for (int i = 0; getUser().getJobseeker().getCurriculumVitaeList().size() > i ; i++) {
-            if (getUser().getJobseeker().getCurriculumVitaeList().get(i).getStatus()) {
+        for (int i = 0; i < getUser().getJobseeker().getCurriculumVitaeList().size(); i++) {
+            if (Boolean.TRUE.equals(getUser().getJobseeker().getCurriculumVitaeList().get(i).getStatus())) {
                 recruitment.setCv(getUser().getJobseeker().getCurriculumVitaeList().get(i).getFileCV());
             }
         }
@@ -188,7 +194,7 @@ public class JobseekerServiceImpl extends BaseService implements JobseekerServic
     public void sendEmailFromTemplate(ContactRequest contactRequest) throws MessagingException, IOException {
         MimeMessage message = mailSender.createMimeMessage();
 
-        message.setFrom(new InternetAddress("trungdang82678@gmail.com"));
+        message.setFrom(new InternetAddress(mailSenderUsername));
 
         message.setRecipients(MimeMessage.RecipientType.TO, contactRequest.getToEmail());
         message.setSubject(contactRequest.getSubject());
@@ -198,7 +204,6 @@ public class JobseekerServiceImpl extends BaseService implements JobseekerServic
 
         // Replace placeholders in the HTML template with dynamic values
         htmlTemplate = htmlTemplate.replace("NAM NGHIEM", contactRequest.getName());
-        // htmlTemplate = htmlTemplate.replace(target:"VI TRI", contactRequest.getSubject());
         htmlTemplate = htmlTemplate.replace("DESCRIPTION", contactRequest.getDescription());
 
         // Set the email's content to be the HTML template
@@ -208,8 +213,9 @@ public class JobseekerServiceImpl extends BaseService implements JobseekerServic
     }
 
     public static String readFile(String filename) throws IOException {
-        File file = ResourceUtils.getFile("classpath:send-email.html");
-        byte[] encoded = Files.readAllBytes(file.toPath());
-        return new String(encoded, StandardCharsets.UTF_8);
+        ClassPathResource resource = new ClassPathResource(filename);
+        try (InputStream inputStream = resource.getInputStream()) {
+            return StreamUtils.copyToString(inputStream, StandardCharsets.UTF_8);
+        }
     }
 }

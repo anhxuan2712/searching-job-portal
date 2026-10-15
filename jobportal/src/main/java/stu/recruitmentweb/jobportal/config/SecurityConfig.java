@@ -14,6 +14,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import stu.recruitmentweb.jobportal.security.CustomUserDetailsService;
 import stu.recruitmentweb.jobportal.security.RestAuthenticationEntryPoint;
@@ -113,15 +114,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/**/*.css",
                         "/**/*.js")
                 .permitAll()
-                .antMatchers("/auth/**", "/oauth2/**","/admin/category",
+                .antMatchers("/auth/**", "/oauth2/**", "/admin/category",
                         "/jobseeker/job-search/**",
                         "/jobseeker/job-detail/**",
                         "/jobseeker/contact/**",
-                        "/admin/advertisement/**" ,
                         "/view-file/**",
                         "/document/**",
                         "/image/**"
                 )
+                .permitAll()
+                .antMatchers(HttpMethod.GET, "/admin/advertisement", "/admin/advertisement/**")
                 .permitAll()
                 .anyRequest()
                 .authenticated()

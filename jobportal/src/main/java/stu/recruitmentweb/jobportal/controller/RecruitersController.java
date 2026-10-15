@@ -24,18 +24,18 @@ public class RecruitersController {
     private final RecruitersService recruitersService;
 
     @GetMapping
-    private ResponseEntity<RecruiterResponse> getRecruiterInfo(){
+    public ResponseEntity<RecruiterResponse> getRecruiterInfo(){
         return ResponseEntity.ok(recruitersService.getRecruiterInfo());
     }
 
     @PutMapping
-    private ResponseEntity<String> editRecruiterInfo(@Valid @RequestBody RecruiterUpdateRequest recruiterUpdateRequest){
+    public ResponseEntity<String> editRecruiterInfo(@Valid @RequestBody RecruiterUpdateRequest recruiterUpdateRequest){
         return ResponseEntity.ok(recruitersService.editProfileOfRecruiter(recruiterUpdateRequest));
     }
 
     // Update
     @PutMapping("/profile")
-    private ResponseEntity<?> editRecruiterInfo(@RequestParam  String recruiterAddress,
+    public ResponseEntity<?> editRecruiterInfo(@RequestParam  String recruiterAddress,
                                                 @RequestParam String recruiterPhone,
                                                 @RequestParam String skypeAccount,
                                                 @RequestParam String workplace,
@@ -50,34 +50,34 @@ public class RecruitersController {
     }
 
     @PostMapping("/add-job")
-    private ResponseEntity<String> recruiterAddNewJob(@Valid @RequestBody JobRequest jobRequest){
+    public ResponseEntity<String> recruiterAddNewJob(@Valid @RequestBody JobRequest jobRequest){
         return new ResponseEntity<>(recruitersService.recruiterAddJob(jobRequest), HttpStatus.CREATED);
     }
 
     @GetMapping("/job")
-    private ResponseEntity<Page<JobResponse>> getPageJobOfRecruiter(@RequestParam Integer pageNo,
+    public ResponseEntity<Page<JobResponse>> getPageJobOfRecruiter(@RequestParam Integer pageNo,
                                                                    @RequestParam Integer pageSize){
         return ResponseEntity.ok(recruitersService.getAllJobOfRecruiter(pageNo, pageSize));
     }
 
     @GetMapping("/job/{id}")
-    private ResponseEntity<JobResponse> getJobOfRecruiter(@PathVariable Long id){
+    public ResponseEntity<JobResponse> getJobOfRecruiter(@PathVariable Long id){
         return ResponseEntity.ok(recruitersService.getJobOfRecruiterById(id));
     }
 
     @PutMapping("/job/{id}")
-    private ResponseEntity<String> editJobInfo(@PathVariable Long id, @RequestBody JobRequest jobRequest){
+    public ResponseEntity<String> editJobInfo(@PathVariable Long id, @RequestBody JobRequest jobRequest){
         return ResponseEntity.ok(recruitersService.editJobInfo(id, jobRequest));
     }
 
     @DeleteMapping("/job/{id}")
-    private ResponseEntity<String> deleteJobById(@PathVariable Long id){
+    public ResponseEntity<String> deleteJobById(@PathVariable Long id){
         recruitersService.deleteJob(id);
         return ResponseEntity.ok("Xóa bài đăng tuyển thành công!!!");
     }
 
     @PostMapping("/send-email/{id}")
-    private ResponseEntity<String> sendEmail(@PathVariable Long id, @RequestBody SendEmailRequest sendEmailRequest) throws MessagingException, IOException {
+    public ResponseEntity<String> sendEmail(@PathVariable Long id, @RequestBody SendEmailRequest sendEmailRequest) throws MessagingException, IOException {
         return ResponseEntity.ok(recruitersService.contactWithJobseeker(id, sendEmailRequest));
     }
 }

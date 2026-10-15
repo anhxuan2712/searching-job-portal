@@ -1,0 +1,12 @@
+.git
+.gradle
+.mvn
+target
+uploads
+tmp
+*.iml
+.classpath
+.project
+.settings
+Dockerfile
+.dockerignore

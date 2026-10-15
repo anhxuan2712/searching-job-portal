@@ -99,7 +99,6 @@ const Home = () => {
             </div>
             <div className="col-xl-6 col-lg-6">
               <div className="support-location-img">
-               ```jsx
                 <img src="assets/img/service/support-img.jpg" alt="" />
                 <div className="support-img-cap text-center">
                   <p>Since</p>

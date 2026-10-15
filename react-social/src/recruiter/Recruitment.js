@@ -10,7 +10,6 @@ class Recruitment extends React.Component {
 		super(props);
 		this.state = {
 			listRecruitment: [],
-			clicked: false,
 		}
 
 		this.loadAdvertisement = this.loadAdvertisement.bind(this);
@@ -31,19 +30,18 @@ class Recruitment extends React.Component {
 	}
 
 	handleDelete = (id) => {
-		deleteByID(id);
-		Alert.success("Xóa thành công!!!!")
-		this.setState({ clicked: true });
+		deleteByID(id)
+			.then(() => {
+				Alert.success("Xóa thành công!!!!");
+				this.loadAdvertisement();
+			})
+			.catch(error => {
+				Alert.error((error && error.message) || 'Xóa thất bại');
+			});
 	}
 
 	handleSendEmail = (id) => {
 		this.props.history.push("/recruitment/send-email/"+id);
-	}
-
-	componentDidUpdate() {
-		if (this.state.clicked) {
-			this.loadAdvertisement();
-		}
 	}
 
 

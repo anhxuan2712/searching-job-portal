@@ -46,23 +46,20 @@ public class RecruitmentRepositoryCustomImpl implements RecruitmentRepositoryCus
             params.put("createAt", createAt);
         }
 
-        if (Objects.nonNull(jobName) && jobName.isEmpty()) {
-            strQuery.append(" AND tj2.job_title = :jobName");
-            params.put("jobName", jobName);
+        if (Objects.nonNull(jobName) && !jobName.trim().isEmpty()) {
+            strQuery.append(" AND tj2.job_title LIKE :jobName");
+            params.put("jobName", "%" + jobName.trim() + "%");
         }
 
-        if(Objects.nonNull(isAnswer)) {
+        if (Objects.nonNull(isAnswer)) {
             strQuery.append(" AND tr.is_answer = :isAnswer");
-            params.put("isAnswer", 1);
-        } else {
-            strQuery.append(" AND tr.is_answer = :isAnswer");
-            params.put("isAnswer", 0);
+            params.put("isAnswer", Boolean.TRUE.equals(isAnswer) ? 1 : 0);
         }
 
         String strSelectQuery = "SELECT * " + strQuery;
 
-        String strCountQuery = "SELECT COUNT(DISTINCT tr.id)" + strQuery;
+        String strCountQuery = "SELECT COUNT(DISTINCT tr.id) " + strQuery;
 
-        return BaseRepository.getPagedNativeQuery(em,strSelectQuery, strCountQuery, params, pageable, Recruitment.class);
+        return BaseRepository.getPagedNativeQuery(em, strSelectQuery, strCountQuery, params, pageable, Recruitment.class);
     }
 }

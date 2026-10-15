@@ -45,16 +45,21 @@ class AdvertisementManager extends React.Component {
     handleDeleteAdvertisement = (id) => {
         deleteAdvertisement(id)
             .then(response => {
-                console.log(response)
-            }).catch(Alert.success("Xóa quảng cáo thành công !!!"));
+                Alert.success("Xóa quảng cáo thành công !!!");
+                this.loadAdvertisement();
+            }).catch(error => {
+                Alert.error((error && error.message) || 'Xóa thất bại');
+            });
     }
 
     handleEditAdvertisement = (id) => {
         this.props.history.push("/admin/advertisement/" + id);
     }
 
-    componentDidUpdate() {
-        this.loadAdvertisement();
+    componentDidUpdate(prevProps, prevState) {
+        if (prevState.keyword !== this.state.keyword) {
+            this.loadAdvertisement();
+        }
     }
 
     componentDidMount() {

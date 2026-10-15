@@ -1,30 +1,19 @@
 
-import React, { useEffect } from 'react';
+import React from 'react';
 
 const Footer = () => {
-    // useEffect(() => {
-    //     (function (d, m) {
-    //         var kommunicateSettings =
-    //           { "appId": "1923fe465772b674c05031428cc014d28", "popupWidget": true, "automaticChatOpenOnNavigation": true };
-    //         var s = document.createElement("script"); s.type = "text/javascript"; s.async = true;
-    //         s.src = "https://widget.kommunicate.io/v2/kommunicate.app";
-    //         var h = document.getElementsByTagName("head")[0]; h.appendChild(s);
-    //         window.kommunicate = m; m._globals = kommunicateSettings;
-    //       })(document, window.kommunicate || {});
-    // }, []);
-
     return (
         <footer>
 
-            <div class="footer-area footer-bg footer-padding">
-                <div class="container">
-                    <div class="row d-flex justify-content-between">
-                        <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6">
-                            <div class="single-footer-caption mb-50">
-                                <div class="single-footer-caption mb-30">
-                                    <div class="footer-tittle">
+            <div className="footer-area footer-bg footer-padding">
+                <div className="container">
+                    <div className="row d-flex justify-content-between">
+                        <div className="col-xl-3 col-lg-3 col-md-4 col-sm-6">
+                            <div className="single-footer-caption mb-50">
+                                <div className="single-footer-caption mb-30">
+                                    <div className="footer-tittle">
                                         <h4>Về chúng tôi</h4>
-                                        <div class="footer-pera">
+                                        <div className="footer-pera">
                                             <p>Heaven frucvitful doesn't cover lesser dvsays appear creeping seasons so behold.</p>
                                         </div>
                                     </div>
@@ -32,9 +21,9 @@ const Footer = () => {
 
                             </div>
                         </div>
-                        <div class="col-xl-3 col-lg-3 col-md-4 col-sm-5">
-                            <div class="single-footer-caption mb-50">
-                                <div class="footer-tittle">
+                        <div className="col-xl-3 col-lg-3 col-md-4 col-sm-5">
+                            <div className="single-footer-caption mb-50">
+                                <div className="footer-tittle">
                                     <h4>Liên Hệ</h4>
                                     <ul>
                                         <li>
@@ -48,9 +37,9 @@ const Footer = () => {
 
                             </div>
                         </div>
-                        <div class="col-xl-3 col-lg-3 col-md-4 col-sm-5">
-                            <div class="single-footer-caption mb-50">
-                                <div class="footer-tittle">
+                        <div className="col-xl-3 col-lg-3 col-md-4 col-sm-5">
+                            <div className="single-footer-caption mb-50">
+                                <div className="footer-tittle">
                                     <h4>Trang Liên Quan</h4>
                                     <ul>
                                         <li><a href="#"> View Project</a></li>
@@ -62,26 +51,25 @@ const Footer = () => {
                                 </div>
                             </div>
                         </div>
-                        <div class="col-xl-3 col-lg-3 col-md-4 col-sm-5">
-                            <div class="single-footer-caption mb-50">
-                                <div class="footer-tittle">
+                        <div className="col-xl-3 col-lg-3 col-md-4 col-sm-5">
+                            <div className="single-footer-caption mb-50">
+                                <div className="footer-tittle">
                                     <h4>Bản Tin</h4>
-                                    <div class="footer-pera footer-pera2">
+                                    <div className="footer-pera footer-pera2">
                                         <p>Heaven fruitful doesn't over lesser in days. Appear creeping.</p>
                                     </div>
 
-                                    <div class="footer-form" >
+                                    <div className="footer-form" >
                                         <div id="mc_embed_signup">
-                                            <form target="_blank" action="https://spondonit.us12.list-manage.com/subscribe/post?u=1462626880ade1ac87bd9c93a&amp;id=92a4423d01"
-                                                method="get" class="subscribe_form relative mail_part">
+                                            <form target="_blank" action="https://spondonit.us12.list-manage.com/subscribe/post?u=1462626880ade1ac87bd9c93a&id=92a4423d01"
+                                                method="get" className="subscribe_form relative mail_part">
                                                 <input type="email" name="email" id="newsletter-form-email" placeholder="Email Address"
-                                                    class="placeholder hide-on-focus" onfocus="this.placeholder = ''"
-                                                    onblur="this.placeholder = ' Email Address '" />
-                                                <div class="form-icon">
+                                                    className="placeholder hide-on-focus" />
+                                                <div className="form-icon">
                                                     <button type="submit" name="submit" id="newsletter-submit"
-                                                        class="email_icon newsletter-submit button-contactForm"><img src="assets/img/icon/form.png" alt="" /></button>
+                                                        className="email_icon newsletter-submit button-contactForm"><img src="assets/img/icon/form.png" alt="" /></button>
                                                 </div>
-                                                <div class="mt-10 info"></div>
+                                                <div className="mt-10 info"></div>
                                             </form>
                                         </div>
                                     </div>
@@ -90,28 +78,28 @@ const Footer = () => {
                         </div>
                     </div>
 
-                    <div class="row footer-wejed justify-content-between">
-                        <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6">
+                    <div className="row footer-wejed justify-content-between">
+                        <div className="col-xl-3 col-lg-3 col-md-4 col-sm-6">
 
-                            <div class="footer-logo mb-20">
+                            <div className="footer-logo mb-20">
                                 <a href="index.html"><img src="assets/img/logo/logo2_footer.png" alt="" /></a>
                             </div>
                         </div>
-                        <div class="col-xl-3 col-lg-3 col-md-4 col-sm-5">
-                            <div class="footer-tittle-bottom">
+                        <div className="col-xl-3 col-lg-3 col-md-4 col-sm-5">
+                            <div className="footer-tittle-bottom">
                                 <span>5000+</span>
                                 <p>Talented Hunter</p>
                             </div>
                         </div>
-                        <div class="col-xl-3 col-lg-3 col-md-4 col-sm-5">
-                            <div class="footer-tittle-bottom">
+                        <div className="col-xl-3 col-lg-3 col-md-4 col-sm-5">
+                            <div className="footer-tittle-bottom">
                                 <span>451</span>
                                 <p>Talented Hunter</p>
                             </div>
                         </div>
-                        <div class="col-xl-3 col-lg-3 col-md-4 col-sm-5">
+                        <div className="col-xl-3 col-lg-3 col-md-4 col-sm-5">
 
-                            <div class="footer-tittle-bottom">
+                            <div className="footer-tittle-bottom">
                                 <span>568</span>
                                 <p>Talented Hunter</p>
                             </div>
@@ -120,23 +108,23 @@ const Footer = () => {
                 </div>
             </div>
 
-            <div class="footer-bottom-area footer-bg">
-                <div class="container">
-                    <div class="footer-border">
-                        <div class="row d-flex justify-content-between align-items-center">
-                            <div class="col-xl-10 col-lg-10 ">
-                                <div class="footer-copy-right">
+            <div className="footer-bottom-area footer-bg">
+                <div className="container">
+                    <div className="footer-border">
+                        <div className="row d-flex justify-content-between align-items-center">
+                            <div className="col-xl-10 col-lg-10 ">
+                                <div className="footer-copy-right">
                                     <p>
-                                        Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+                                        Copyright &copy; {new Date().getFullYear()} All rights reserved | This template is made with <i className="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank" rel="noopener noreferrer">Colorlib</a>
                                     </p>
                                 </div>
                             </div>
-                            <div class="col-xl-2 col-lg-2">
-                                <div class="footer-social f-right">
-                                    <a href="#"><i class="fab fa-facebook-f"></i></a>
-                                    <a href="#"><i class="fab fa-twitter"></i></a>
-                                    <a href="#"><i class="fas fa-globe"></i></a>
-                                    <a href="#"><i class="fab fa-behance"></i></a>
+                            <div className="col-xl-2 col-lg-2">
+                                <div className="footer-social f-right">
+                                    <a href="#"><i className="fab fa-facebook-f"></i></a>
+                                    <a href="#"><i className="fab fa-twitter"></i></a>
+                                    <a href="#"><i className="fas fa-globe"></i></a>
+                                    <a href="#"><i className="fab fa-behance"></i></a>
                                 </div>
                             </div>
                         </div>

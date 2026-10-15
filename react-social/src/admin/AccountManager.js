@@ -30,11 +30,10 @@ const AccountManager = (props) => {
     const handleDisableAccount = (id) => {
         lockedAccount(id)
             .then(response => {
-                console.log(response);
-            }).catch(error => {
-                // Handle error
                 Alert.success("Cập nhật khóa thành công!!!");
-                loadAccount()
+                loadAccount();
+            }).catch(error => {
+                Alert.error((error && error.message) || 'Cập nhật thất bại');
             });
     };
 
@@ -93,7 +92,11 @@ const AccountManager = (props) => {
                                         <td>{account.name}</td>
                                         <td>{account.email}</td>
                                         <td className="d-none d-md-table-cell">
-                                            {account.recruiter && account.recruiter.phone ? account.recruiter.phone : account.jobseeker.phone}
+                                            {account.recruiter && account.recruiter.phone
+                                                ? account.recruiter.phone
+                                                : (account.jobseeker && account.jobseeker.phone
+                                                    ? account.jobseeker.phone
+                                                    : 'N/A')}
                                         </td>
                                         <td>
                                             {account.isLocked === false ? (

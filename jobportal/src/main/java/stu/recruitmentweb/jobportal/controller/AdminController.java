@@ -21,53 +21,53 @@ public class AdminController {
     
 
     @GetMapping("/job")
-    private ResponseEntity<Page<JobDetailResponse>> getAllJob(@RequestParam Integer pageNo,
+    public ResponseEntity<Page<JobDetailResponse>> getAllJob(@RequestParam Integer pageNo,
                                                               @RequestParam Integer pageSize) {
         return ResponseEntity.ok(adminService.getPageJobOfRecruiters(pageNo, pageSize));
     }
 
     @GetMapping("/category")
-    private ResponseEntity<?> getAllCategory(@RequestParam Integer pageNo,
+    public ResponseEntity<?> getAllCategory(@RequestParam Integer pageNo,
                                              @RequestParam Integer pageSize) {
         return ResponseEntity.ok(adminService.getPageCategory(pageNo, pageSize));
     }
 
     @GetMapping("/category/{id}")
-    private ResponseEntity<?> getCategoryById(@PathVariable Long id) {
+    public ResponseEntity<?> getCategoryById(@PathVariable Long id) {
         return ResponseEntity.ok(adminService.getCategory(id));
     }
 
     @PutMapping("/category/{id}")
-    private ResponseEntity<?> updateCategoryById(@PathVariable Long id, @RequestBody CategoryRequest categoryRequest) {
+    public ResponseEntity<?> updateCategoryById(@PathVariable Long id, @RequestBody CategoryRequest categoryRequest) {
         return ResponseEntity.ok(adminService.updateCategory(id, categoryRequest));
     }
 
     @PostMapping("/category")
-    private ResponseEntity<?> addCategory(@RequestBody CategoryRequest categoryRequest) {
+    public ResponseEntity<?> addCategory(@RequestBody CategoryRequest categoryRequest) {
         return ResponseEntity.ok(adminService.addCategory(categoryRequest));
     }
 
     @GetMapping("/account-register")
-    private ResponseEntity<Page<UserDetailResponse>> getPageResponseEntity(@RequestParam Integer pageNo,
+    public ResponseEntity<Page<UserDetailResponse>> getPageResponseEntity(@RequestParam Integer pageNo,
                                                                            @RequestParam Integer pageSize) {
         return ResponseEntity.ok(adminService.getPageAccountManager(pageNo, pageSize));
     }
 
     @PostMapping("/locked-account/{id}")
-    private ResponseEntity<String> lockedAccount(@PathVariable Long id) {
+    public ResponseEntity<String> lockedAccount(@PathVariable Long id) {
         adminService.lockAccountOfRecruiterAndJobseeker(id);
         return ResponseEntity.ok("Khóa tài khoản thành công!!!");
     }
 
     @PostMapping("/advertisement")
-    private ResponseEntity<String> add(@RequestParam String title,
+    public ResponseEntity<String> add(@RequestParam String title,
                                        @RequestParam("image") MultipartFile image,
                                        @RequestParam String description) {
         return new ResponseEntity<>(adminService.addAdvertisement(title,image, description), HttpStatus.CREATED);
     }
 
     @PutMapping("/advertisement/{id}")
-    private ResponseEntity<String> update(@RequestParam String title,
+    public ResponseEntity<String> update(@RequestParam String title,
                                        @RequestParam("image") MultipartFile image,
                                        @RequestParam String description, @PathVariable Long id) {
         adminService.updateAdvertisement(id,title,image, description);
@@ -75,20 +75,20 @@ public class AdminController {
     }
 
     @GetMapping("/advertisement")
-    private ResponseEntity<Page<AdvertisementResponse>> getPageAdvertisement(@RequestParam(required = false) String title,
+    public ResponseEntity<Page<AdvertisementResponse>> getPageAdvertisement(@RequestParam(required = false) String title,
                                                                              @RequestParam Integer pageNo,
                                                                              @RequestParam Integer pageSize) {
         return ResponseEntity.ok(adminService.getPageAdvertisement(title, pageNo, pageSize));
     }
 
     @DeleteMapping("/advertisement/{id}")
-    private ResponseEntity<String> deleteAdvertisement(@PathVariable Long id){
+    public ResponseEntity<String> deleteAdvertisement(@PathVariable Long id){
         adminService.deleteAdvertisement(id);
         return ResponseEntity.ok("Xoá quảng cáo thành công");
     }
 
     @GetMapping("/advertisement/{id}")
-    private ResponseEntity<AdvertisementResponse> getOne(@PathVariable Long id) {
+    public ResponseEntity<AdvertisementResponse> getOne(@PathVariable Long id) {
         return ResponseEntity.ok(adminService.getAdvertisementById(id));
     }
 }

@@ -40,6 +40,10 @@ public class CustomUserDetailsService implements UserDetailsService {
                 () -> new ResourceNotFoundException("User", "id", id)
         );
 
+        if (Boolean.TRUE.equals(user.getIsLocked())) {
+            throw new BadRequestException("Tài khoản của bạn đã bị khóa. Lý do chi tiết sẽ có trong email của bạn.");
+        }
+
         return UserPrincipal.create(user);
     }
 }

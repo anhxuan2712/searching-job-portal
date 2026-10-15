@@ -38,8 +38,10 @@ class Advertisement extends React.Component {
             });
     }
 
-    componentDidUpdate(){
-        this.loadAdvertisement()
+    componentDidUpdate(prevProps, prevState) {
+        if (prevState.keyword !== this.state.keyword) {
+            this.loadAdvertisement();
+        }
     }
 
     componentDidMount() {

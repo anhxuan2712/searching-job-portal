@@ -22,33 +22,34 @@ import java.util.Objects;
 
 @Service
 public class FileStorageServiceImpl implements FileStorageService {
-    private Path fileStorageLocation;
-
-    public FileStorageServiceImpl() {
-        // TODO document why this constructor is empty
-    }
+    private final Path fileStorageLocation;
 
     @Autowired
-    public void FileStorageService(FileStorageProperties fileStorageProperties) {
+    public FileStorageServiceImpl(FileStorageProperties fileStorageProperties) {
         this.fileStorageLocation = Paths.get(fileStorageProperties.getUploadDir())
                 .toAbsolutePath().normalize();
 
         try {
             Files.createDirectories(this.fileStorageLocation);
         } catch (Exception ex) {
-            throw new FileStorageException("Invalid");
+            throw new FileStorageException("Could not create upload directory", ex);
         }
     }
 
     @Override
     public String storeFile(MultipartFile file) {
+        if (file == null || file.isEmpty() || file.getOriginalFilename() == null) {
+            throw new FileStorageException("File cannot be empty");
+        }
+
         // Normalize file name
         String fileName = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
 
         try {
-            // Check if the file's name contains invalid characters
-            if (fileName.contains(".."))
-                throw new FileStorageException("Invalid!!");
+            // Check if the file's name contains invalid path sequence characters
+            if (fileName.contains("..") || fileName.contains("/") || fileName.contains("\\")) {
+                throw new FileStorageException("Filename contains invalid path sequence: " + fileName);
+            }
 
             // Copy file to the target location (Replacing existing file with the same name)
             Path targetLocation = this.fileStorageLocation.resolve(fileName);
@@ -56,7 +57,7 @@ public class FileStorageServiceImpl implements FileStorageService {
 
             return "photographer/files/" + fileName;
         } catch (IOException ex) {
-            throw new FileStorageException("Invalid!!!");
+            throw new FileStorageException("Could not store file " + fileName + ". Please try again!", ex);
         }
     }
 
@@ -64,14 +65,17 @@ public class FileStorageServiceImpl implements FileStorageService {
     public Resource loadFileAsResource(String fileName) {
         try {
             Path filePath = this.fileStorageLocation.resolve(fileName).normalize();
+            if (!filePath.startsWith(this.fileStorageLocation)) {
+                throw new MyFileNotFoundException("File not found or access denied: " + fileName);
+            }
             Resource resource = new UrlResource(filePath.toUri());
-            if(resource.exists()) {
+            if (resource.exists() && resource.isReadable()) {
                 return resource;
             } else {
-                throw new MyFileNotFoundException("Not found!!!");
+                throw new MyFileNotFoundException("File not found: " + fileName);
             }
         } catch (MalformedURLException ex) {
-            throw new MyFileNotFoundException("Not found!!!");
+            throw new MyFileNotFoundException("File not found: " + fileName, ex);
         }
     }
 }

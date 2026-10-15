@@ -21,7 +21,7 @@ public class RecruitmentController {
     private final JobseekerService jobseekerService;
 
     @GetMapping()
-    private ResponseEntity<Page<RecruitmentResponse>> getPageRecruitmentOfRecruiter(@RequestParam(required = false) String createAt,
+    public ResponseEntity<Page<RecruitmentResponse>> getPageRecruitmentOfRecruiter(@RequestParam(required = false) String createAt,
                                                                                     @RequestParam(required = false) Boolean isAnswer,
                                                                                     @RequestParam(required = false) String jobName,
                                                                                     @RequestParam Integer pageNo,
@@ -30,7 +30,7 @@ public class RecruitmentController {
     }
 
     @GetMapping("/jobseeker")
-    private ResponseEntity<Page<RecruitmentResponse>> getPageRecruitmentOfJobseeker(@RequestParam(required = false) String createAt,
+    public ResponseEntity<Page<RecruitmentResponse>> getPageRecruitmentOfJobseeker(@RequestParam(required = false) String createAt,
                                                                                     @RequestParam(required = false) Boolean isAnswer,
                                                                                     @RequestParam(required = false) String jobName,
                                                                                     @RequestParam Integer pageNo,

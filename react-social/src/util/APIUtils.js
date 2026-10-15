@@ -1,10 +1,13 @@
 import { API_BASE_URL, ACCESS_TOKEN } from '../constants';
 
 const request = (options) => {
-    const headers = new Headers({
-        'Content-Type': 'application/json',
-    })
-    
+    const headers = new Headers();
+
+    // Do NOT set Content-Type for FormData: the browser sets it with the correct multipart boundary.
+    if (!(options.body instanceof FormData)) {
+        headers.append('Content-Type', 'application/json');
+    }
+
     if(localStorage.getItem(ACCESS_TOKEN)) {
         headers.append('Authorization', 'Bearer ' + localStorage.getItem(ACCESS_TOKEN))
     }
@@ -13,14 +16,17 @@ const request = (options) => {
     options = Object.assign({}, defaults, options);
 
     return fetch(options.url, options)
-    .then(response => 
-        response.json().then(json => {
-            if(!response.ok) {
-                return Promise.reject(json);
+    .then(response => {
+        const contentType = response.headers.get('content-type');
+        const isJson = contentType && contentType.includes('application/json');
+        const bodyPromise = isJson ? response.json() : response.text();
+        return bodyPromise.then(body => {
+            if (!response.ok) {
+                return Promise.reject(isJson ? body : { message: body });
             }
-            return json;
-        })
-    );
+            return body;
+        });
+    });
 };
 
 export function getCurrentUser() {

@@ -111,12 +111,7 @@ public class AuthServiceImpl extends BaseService implements AuthService {
         );
 
         companyRepository.save(company);
-        Boolean gender = null;
-        if (signUpRequest.getRecruiterRequest().getGender() == "0") {
-            gender = false;
-        } else {
-            gender = true;
-        }
+        Boolean gender = "0".equals(signUpRequest.getRecruiterRequest().getGender()) ? false : true;
 
         Recruiter recruiter = new Recruiter(
                 signUpRequest.getRecruiterRequest().getWorkplace(),

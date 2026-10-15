@@ -36,6 +36,13 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.util.StreamUtils;
+import stu.recruitmentweb.jobportal.service.FileStorageService;
+
+import java.io.InputStream;
+
 @Service
 @RequiredArgsConstructor
 public class RecruitersServiceImpl extends BaseService implements RecruitersService {
@@ -47,8 +54,11 @@ public class RecruitersServiceImpl extends BaseService implements RecruitersServ
     private final JavaMailSender mailSender;
     private final RecruitmentRepository recruitmentRepository;
     private final RecruitmentRepositoryCustom recruitmentRepositoryCustom;
-    private final FileStorageServiceImpl fileStorageService;
+    private final FileStorageService fileStorageService;
     private final CategoryRepository categoryRepository;
+
+    @Value("${spring.mail.username:trungdang82678@gmail.com}")
+    private String mailSenderUsername;
 
     //RECRUITER
 
@@ -135,8 +145,11 @@ public class RecruitersServiceImpl extends BaseService implements RecruitersServ
     //JOB
     @Override
     public String recruiterAddJob(JobRequest jobRequest) {
-        Job job = new Job(jobRequest,categoryRepository.findById(jobRequest.getCategory()).get(), recruiterRepository.findByUser(getUser()).orElseThrow(() ->
-                new IllegalArgumentException("Nhà tuyển dụng không tồn tại!!")));
+        Category category = categoryRepository.findById(jobRequest.getCategory())
+                .orElseThrow(() -> new BadRequestException("Danh mục không tồn tại!"));
+        Recruiter recruiter = recruiterRepository.findByUser(getUser())
+                .orElseThrow(() -> new IllegalArgumentException("Nhà tuyển dụng không tồn tại!!"));
+        Job job = new Job(jobRequest, category, recruiter);
         jobRepository.save(job);
         return "Đăng tin tuyển dụng thành công!!!";
     }
@@ -147,8 +160,8 @@ public class RecruitersServiceImpl extends BaseService implements RecruitersServ
         Pageable pageable = PageRequest.of(page, pageSize);
         Recruiter recruiter = recruiterRepository.findByUser(getUser()).orElseThrow(() ->
                 new IllegalArgumentException("Nhà tuyển dụng không tồn tại!!"));
-        List<JobResponse> result = mapper.convertToResponseList(jobRepository.findAllByRecruiter(recruiter), JobResponse.class);
-        return new PageImpl<>(result, pageable, result.size() );
+        Page<Job> jobPage = jobRepository.findAllByRecruiter(recruiter, pageable);
+        return mapper.convertToResponsePage(jobPage, JobResponse.class, pageable);
     }
 
     @Override
@@ -217,7 +230,7 @@ public class RecruitersServiceImpl extends BaseService implements RecruitersServ
     public void sendEmailFromTemplate(SendEmailRequest sendEmailRequest, String jobseekerName) throws MessagingException, IOException {
         MimeMessage message = mailSender.createMimeMessage();
 
-        message.setFrom(new InternetAddress("trungdang82678@gmail.com"));
+        message.setFrom(new InternetAddress(mailSenderUsername));
         message.setRecipients(MimeMessage.RecipientType.TO, sendEmailRequest.getToEmail());
         message.setSubject(sendEmailRequest.getTitle());
 
@@ -235,8 +248,9 @@ public class RecruitersServiceImpl extends BaseService implements RecruitersServ
     }
 
     public static String readFile(String filename) throws IOException {
-        File file = ResourceUtils.getFile("classpath:send-email.html");
-        byte[] encoded = Files.readAllBytes(file.toPath());
-        return new String(encoded, StandardCharsets.UTF_8);
+        ClassPathResource resource = new ClassPathResource(filename);
+        try (InputStream inputStream = resource.getInputStream()) {
+            return StreamUtils.copyToString(inputStream, StandardCharsets.UTF_8);
+        }
     }
 }

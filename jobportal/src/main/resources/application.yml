@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/timviec?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false
-    username: root
-    password: 123456
+    url: ${SPRING_DATASOURCE_URL:jdbc:mysql://localhost:3306/timviec?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false}
+    username: ${SPRING_DATASOURCE_USERNAME:root}
+    password: ${SPRING_DATASOURCE_PASSWORD}
 
   jpa:
     show-sql: true
@@ -17,15 +17,15 @@ spring:
       client:
         registration:
           google:
-            clientId: 5014057553-8gm9um6vnli3cle5rgigcdjpdrid14m9.apps.googleusercontent.com
-            clientSecret: tWZKVLxaD_ARWsriiiUFYoIk
+            clientId: ${GOOGLE_CLIENT_ID}
+            clientSecret: ${GOOGLE_CLIENT_SECRET}
             redirectUri: "{baseUrl}/oauth2/callback/{registrationId}"
             scope:
               - email
               - profile
           facebook:
-            clientId: 801476171386686
-            clientSecret: 7372287ea3c01ed44c2e68e466af8067
+            clientId: ${FACEBOOK_CLIENT_ID}
+            clientSecret: ${FACEBOOK_CLIENT_SECRET}
             redirectUri: "{baseUrl}/oauth2/callback/{registrationId}"
             scope:
               - email
@@ -42,10 +42,10 @@ spring:
       max-file-size: 1MB
       max-request-size: 100MB
   mail:
-    host: smtp.gmail.com
-    username: trungdang82678@gmail.com
-    password: ebyzmfinztoqladf
-    port: 587
+    host: ${SPRING_MAIL_HOST:smtp.gmail.com}
+    username: ${SPRING_MAIL_USERNAME}
+    password: ${SPRING_MAIL_PASSWORD}
+    port: ${SPRING_MAIL_PORT:587}
     properties:
       mail:
         smtp:
@@ -53,15 +53,15 @@ spring:
           starttls:
             enable: true
 file:
-  uploadDir: /hdd/data/photographer/upload/
-  tempExportExcel: /hdd/data/photographer/tmp/
-  libreOfficePath: /hdd/setup/libreoffice/opt/libreoffice6.4/program/
+  uploadDir: ${FILE_UPLOAD_DIR:./uploads}
+  tempExportExcel: ${FILE_TEMP_EXPORT_EXCEL:./tmp}
+  libreOfficePath: ${LIBREOFFICE_PATH:/opt/libreoffice/program/}
 app:
   auth:
-    tokenSecret: 04ca023b39512e46d0c2cf4b48d5aac61d34302994c87ed4eff225dcf3b0a218739f3897051a057f9b846a69ea2927a587044164b7bae5e1306219d50b588cb1
+    tokenSecret: ${APP_AUTH_TOKEN_SECRET}
     tokenExpirationMsec: 864000000
   cors:
-    allowedOrigins: http://localhost:3000,http://localhost:8080
+    allowedOrigins: ${APP_CORS_ALLOWED_ORIGINS:http://localhost:3000,http://localhost:8080}
   oauth2:
     authorizedRedirectUris:
       - http://localhost:3000/oauth2/redirect
